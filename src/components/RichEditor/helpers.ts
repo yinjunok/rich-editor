@@ -24,6 +24,10 @@ const helpers = {
     } else {
       Editor.addMark(editor, format, true)
     }
+  },
+  isLinkActive(editor: Editor) {
+    const [link] = Editor.nodes(editor, { match: n => n.type === 'link' })
+    return !!link
   }
 }
 

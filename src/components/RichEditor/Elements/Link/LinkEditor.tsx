@@ -22,7 +22,13 @@ const LinkEditor: FC<IEditLink> = ({ url, text }) => {
     <div className={styles.linkEditor}>
       <input placeholder='URL' value={link.url} />
       <input placeholder='Text' value={link.text} />
-      <button>插入</button>
+      <button
+        onClick={() => {
+          // editor.insertData()
+        }}
+      >
+        插入
+      </button>
     </div>
   )
 }
