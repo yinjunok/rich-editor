@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect } from 'react'
 import { useSlate } from 'slate-react'
 import { ImLink } from 'react-icons/im'
-import classNames from 'classnames'
+// import classNames from 'classnames'
 import Button from './Button'
-import styles from './styles.less'
+// import styles from './styles.less'
 
 const LinkButton: FC<{ toolbarVisible: boolean }> = ({ toolbarVisible }) => {
   const editor = useSlate()
@@ -17,7 +17,7 @@ const LinkButton: FC<{ toolbarVisible: boolean }> = ({ toolbarVisible }) => {
 
   return (
     <Button
-      className={classNames({[styles.hover]: visible})}
+      // className={classNames({[styles.hover]: visible})}
       onMouseDown={event => {
         event.preventDefault();
         event.stopPropagation()
@@ -25,12 +25,11 @@ const LinkButton: FC<{ toolbarVisible: boolean }> = ({ toolbarVisible }) => {
       }}
     >
     <ImLink />
-    <div className={styles.linkDrop}>
+    {/* <div className={styles.linkDrop}>
       <input placeholder='URL' />
       <input placeholder='Text' />
       <button>插入</button>
-
-    </div>
+    </div> */}
   </Button>
   )
 }
