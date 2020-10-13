@@ -1,6 +1,6 @@
 import React, { FC, useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Editor, Range } from 'slate'
+import { Editor, Range } from 'slate';
 import { useSlate, ReactEditor } from 'slate-react';
 import { IconContext } from 'react-icons';
 import {
@@ -10,26 +10,24 @@ import {
   ImStrikethrough,
   ImSubscript,
   ImSuperscript,
-  // ImLink,
 } from 'react-icons/im';
-import FontSizeSelect from './FontSizeButton'
-// import Button from './Button';
-import Divider from '../Divider'
-import MarkButton from './MarkButton'
-import LinkButton from './LinkButton'
+import FontSizeSelect from './FontSizeButton';
+import Divider from '../Divider';
+import MarkButton from './MarkButton';
+import LinkButton from './LinkButton';
 import styles from './styles.less';
 
 const HoverToolbar: FC = () => {
   const editor = useSlate();
-  const [visible, setVisible] = useState<boolean>(false)
-  const toolbarDomRef = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState<boolean>(false);
+  const toolbarDomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = toolbarDomRef.current
-    const { selection } = editor
-    
+    const el = toolbarDomRef.current;
+    const { selection } = editor;
+
     if (!el) {
-      return
+      return;
     }
 
     if (
@@ -38,52 +36,50 @@ const HoverToolbar: FC = () => {
       Range.isCollapsed(selection) ||
       Editor.string(editor, selection) === ''
     ) {
-      el.removeAttribute('style')
-      setVisible(false)
-      return
+      el.removeAttribute('style');
+      setVisible(false);
+      return;
     }
 
-    const domSelection = window.getSelection()
+    const domSelection = window.getSelection();
     if (domSelection) {
-      const domRange = domSelection.getRangeAt(0)
-      const rect = domRange.getBoundingClientRect()
-      el.style.opacity = '1'
-      el.style.top = `${rect.top - el.offsetHeight - 8}px`
-      el.style.left = `${
-        rect.left +
+      const domRange = domSelection.getRangeAt(0);
+      const rect = domRange.getBoundingClientRect();
+      el.style.opacity = '1';
+      el.style.top = `${rect.top - el.offsetHeight - 8}px`;
+      el.style.left = `${rect.left +
         window.pageXOffset -
         el.offsetWidth / 2 +
-        rect.width / 2
-      }px`
-      setVisible(true)
+        rect.width / 2}px`;
+      setVisible(true);
     }
-  })
+  });
 
   return createPortal(
     <IconContext.Provider value={{ className: styles.icon }}>
       <div ref={toolbarDomRef} className={styles.hoverToolbar}>
-        <MarkButton format='bold'>
+        <MarkButton format="bold">
           <ImBold />
         </MarkButton>
-        <MarkButton format='italic'>
+        <MarkButton format="italic">
           <ImItalic />
         </MarkButton>
-        <MarkButton format='underline'>
+        <MarkButton format="underline">
           <ImUnderline />
         </MarkButton>
-        <MarkButton format='del'>
+        <MarkButton format="del">
           <ImStrikethrough />
         </MarkButton>
-        <MarkButton format='sub'>
+        <MarkButton format="sub">
           <ImSubscript />
         </MarkButton>
-        <MarkButton format='sup'>
+        <MarkButton format="sup">
           <ImSuperscript />
         </MarkButton>
         <Divider />
 
         <FontSizeSelect toolbarVisible={visible} />
-        <LinkButton toolbarVisible={visible} />
+        <LinkButton />
         {/* <Button
           onMouseDown={event => {
             event.preventDefault();

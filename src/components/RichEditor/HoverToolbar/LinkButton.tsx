@@ -1,20 +1,14 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useContext } from 'react';
 import { useSlate } from 'slate-react';
 import { ImLink } from 'react-icons/im';
 import classNames from 'classnames';
+import { Context } from '../context/linkEdit';
 import Button from './Button';
-// import LinkEditor from '../Elements/Link/LinkEditor'
 import styles from './styles.less';
 
-const LinkButton: FC<{ toolbarVisible: boolean }> = ({ toolbarVisible }) => {
+const LinkButton: FC = () => {
   const editor = useSlate();
-  const [visible, setVisible] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!toolbarVisible) {
-      setVisible(false);
-    }
-  }, [toolbarVisible]);
+  const { visible, setVisible } = useContext(Context);
 
   return (
     <>
@@ -28,9 +22,6 @@ const LinkButton: FC<{ toolbarVisible: boolean }> = ({ toolbarVisible }) => {
       >
         <ImLink />
       </Button>
-      {/* <div className={styles.linkDrop}>
-      <LinkEditor url='' text='' />
-    </div> */}
     </>
   );
 };

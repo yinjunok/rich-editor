@@ -7,6 +7,7 @@ import LinkEditor from './Elements/Link/LinkEditor';
 import renderLeaf from './renderLeaf';
 import HoverToolbar from './HoverToolbar';
 import withLinks from './plugins/withLinks';
+import { Container } from './context/linkEdit';
 
 const RichEditor: FC = () => {
   const editor = useMemo(
@@ -18,15 +19,10 @@ const RichEditor: FC = () => {
       type: 'paragraph',
       children: [{ text: 'A line of text in a paragraph.' }],
     },
-    {
-      type: 'link',
-      url: 'www.baidu.com',
-      children: [{ text: '百度' }],
-    },
   ]);
 
   return (
-    <>
+    <Container>
       <Slate
         value={value}
         editor={editor}
@@ -38,7 +34,7 @@ const RichEditor: FC = () => {
         <Editable renderElement={renderElement} renderLeaf={renderLeaf} />
         <LinkEditor text="" url="" />
       </Slate>
-    </>
+    </Container>
   );
 };
 
