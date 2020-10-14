@@ -14,6 +14,8 @@ const LinkEditor: FC<IEditLink> = ({ url, text }) => {
   const linkEditorDom = useRef<HTMLDivElement>(null);
   const { visible, setVisible } = useContext(Context);
   const editor = useSlate();
+  const selectionTemp = useRef<Range | null>(editor.selection)
+  console.log(selectionTemp.current)
   const [link, setLink] = useState<IEditLink>({
     url: '',
     text: '',
@@ -78,7 +80,8 @@ const LinkEditor: FC<IEditLink> = ({ url, text }) => {
       <button
         onClick={() => {
           if (link.url && link.text) {
-            helpers.wrapLink(editor, link.url, link.text);
+            console.log(selectionTemp.current)
+            helpers.wrapLink(editor, selectionTemp.current, link.url, link.text);
           }
         }}
       >
