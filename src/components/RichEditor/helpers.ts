@@ -36,19 +36,22 @@ const helpers = {
   unwrapLink(editor: Editor) {
     Transforms.unwrapNodes(editor, { match: n => n.type === 'link' });
   },
-  wrapLink(editor: Editor, selection: Range | null, url: string, text: string) {
+  wrapLink(editor: Editor, selection: Range | null, url: string) {
     if (helpers.isLinkActive(editor)) {
       helpers.unwrapLink(editor);
     }
 
-    // const { selection } = editor;
     const isCollapsed = selection && Range.isCollapsed(selection);
     const link: Node = {
       type: 'link',
       url,
-      children: isCollapsed ? [{ text }] : [],
+      children: [],
     };
-    console.log(selection, isCollapsed)
+
+    if (selection !== null) {
+      Transforms.select(editor, selection);
+    }
+
     if (isCollapsed) {
       Transforms.insertNodes(editor, link);
     } else {

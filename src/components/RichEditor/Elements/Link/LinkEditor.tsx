@@ -3,27 +3,34 @@ import { Range, Editor } from 'slate';
 import { useSlate, ReactEditor } from 'slate-react';
 import helpers from '../../helpers';
 import styles from './styles.less';
-import { Context } from '../../context/linkEdit';
+import { Context } from './context';
 
-interface IEditLink {
-  url: string | undefined;
-  text: string | undefined;
-}
-
-const LinkEditor: FC<IEditLink> = ({ url, text }) => {
+const LinkEditor: FC = () => {
   const linkEditorDom = useRef<HTMLDivElement>(null);
   const { visible, setVisible } = useContext(Context);
   const editor = useSlate();
-  const selectionTemp = useRef<Range | null>(editor.selection)
-  console.log(selectionTemp.current)
-  const [link, setLink] = useState<IEditLink>({
-    url: '',
-    text: '',
-  });
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const selectionTemp = useRef<Range | null>(editor.selection);
+  const [url, setUrl] = useState<string>('');
 
   useEffect(() => {
-    setLink({ url, text });
-  }, [url, text]);
+    if (editor.selection === null) {
+      return;
+    }
+    selectionTemp.current = editor.selection;
+  }, [editor.selection]);
+
+  useEffect(() => {
+    if (inputRef.current && visible) {
+      inputRef.current.focus();
+    }
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) {
+      setUrl('');
+    }
+  }, [visible]);
 
   useEffect(() => {
     if (visible) {
@@ -61,32 +68,39 @@ const LinkEditor: FC<IEditLink> = ({ url, text }) => {
 
   return (
     <div ref={linkEditorDom} className={styles.linkEditor}>
-      <input
-        placeholder="URL"
-        value={link.url}
-        onChange={e => {
-          const value = e.target.value;
-          setLink(state => ({ ...state, url: value }));
-        }}
-      />
-      <input
-        placeholder="Text"
-        value={link.text}
-        onChange={e => {
-          const value = e.target.value;
-          setLink(state => ({ ...state, text: value }));
-        }}
-      />
-      <button
-        onClick={() => {
-          if (link.url && link.text) {
-            console.log(selectionTemp.current)
-            helpers.wrapLink(editor, selectionTemp.current, link.url, link.text);
-          }
-        }}
-      >
-        插入
-      </button>
+      <div>
+        <input
+          ref={inputRef}
+          className={styles.input}
+          placeholder="URL"
+          value={url}
+          onKeyDown={e => {
+            if (e.key === 'Enter' && url) {
+              e.stopPropagation();
+              helpers.wrapLink(editor, selectionTemp.current, url);
+              setVisible(false);
+            }
+          }}
+          onChange={e => {
+            const value = e.target.value;
+            setUrl(value);
+          }}
+        />
+      </div>
+      <div style={{ textAlign: 'right', marginTop: 8 }}>
+        <button
+          className={styles.button}
+          onClick={e => {
+            if (url) {
+              e.stopPropagation();
+              helpers.wrapLink(editor, selectionTemp.current, url);
+              setVisible(false);
+            }
+          }}
+        >
+          插入
+        </button>
+      </div>
     </div>
   );
 };
