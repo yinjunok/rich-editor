@@ -37,6 +37,10 @@ const helpers = {
     Transforms.unwrapNodes(editor, { match: n => n.type === 'link' });
   },
   wrapLink(editor: Editor, selection: Range | null, url: string) {
+    if (selection === null) {
+      return;
+    }
+
     if (helpers.isLinkActive(editor)) {
       helpers.unwrapLink(editor);
     }
@@ -48,10 +52,7 @@ const helpers = {
       children: [],
     };
 
-    if (selection !== null) {
-      Transforms.select(editor, selection);
-    }
-
+    Transforms.select(editor, selection);
     if (isCollapsed) {
       Transforms.insertNodes(editor, link);
     } else {
