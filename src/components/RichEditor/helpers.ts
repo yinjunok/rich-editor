@@ -1,5 +1,6 @@
 import { Editor, Transforms, Range, Node } from 'slate';
 import { TBooleanFormat, IValueFormat } from './types';
+import { ILink } from './Elements/Link/LinkEditor';
 
 const helpers = {
   getMarkValue(editor: Editor, format: TBooleanFormat | keyof IValueFormat) {
@@ -36,7 +37,7 @@ const helpers = {
   unwrapLink(editor: Editor) {
     Transforms.unwrapNodes(editor, { match: n => n.type === 'link' });
   },
-  wrapLink(editor: Editor, selection: Range | null, url: string) {
+  wrapLink(editor: Editor, selection: Range | null, link: ILink) {
     if (selection === null) {
       return;
     }
@@ -46,17 +47,17 @@ const helpers = {
     }
 
     const isCollapsed = selection && Range.isCollapsed(selection);
-    const link: Node = {
+    const linkNode: Node = {
       type: 'link',
-      url,
+      ...link,
       children: [],
     };
 
     Transforms.select(editor, selection);
     if (isCollapsed) {
-      Transforms.insertNodes(editor, link);
+      Transforms.insertNodes(editor, linkNode);
     } else {
-      Transforms.wrapNodes(editor, link, { split: true });
+      Transforms.wrapNodes(editor, linkNode, { split: true });
       Transforms.collapse(editor, { edge: 'end' });
     }
   },

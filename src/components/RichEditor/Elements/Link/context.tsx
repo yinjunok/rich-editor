@@ -1,20 +1,47 @@
-import React, { createContext, FC, useState } from 'react';
+import React, { createContext, FC } from 'react';
+import { useImmer } from 'use-immer';
 
-interface ILinkEditState {
+interface ILinkEditorState {
+  position:
+    | {
+        left: number;
+        top: number;
+      }
+    | undefined;
+  arrow: 'up' | 'down' | 'hidden';
   visible: boolean;
-  setVisible: (visible: boolean) => void;
 }
 
-const Context = createContext<ILinkEditState>({
-  visible: false,
-  setVisible: () => {},
+type TUpdater = (p: Partial<ILinkEditorState>) => void;
+
+const Context = createContext<{ state: ILinkEditorState; updater: TUpdater }>({
+  state: {
+    position: undefined,
+    arrow: 'hidden',
+    visible: false,
+  },
+  updater: () => {},
 });
 
 const Container: FC = ({ children }) => {
-  const [visible, setVisible] = useState<boolean>(false);
+  const [linkEditorState, updateLinkEditorState] = useImmer<ILinkEditorState>({
+    position: undefined,
+    arrow: 'hidden',
+    visible: false,
+  });
+
+  const updater: TUpdater = params => {
+    updateLinkEditorState(draft => {
+      for (const p in params) {
+        if (params.hasOwnProperty(p)) {
+          // draft[p] = params[p]
+        }
+      }
+    });
+  };
 
   return (
-    <Context.Provider value={{ visible, setVisible }}>
+    <Context.Provider value={{ state: linkEditorState, updater }}>
       {children}
     </Context.Provider>
   );

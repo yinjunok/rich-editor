@@ -1,0 +1,36 @@
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 18px;
+  border-radius: 11px;
+  background-color: rgba(0, 0, 0, 0.25);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  }
+
+  &.checked {
+    background-color: #1890ff;
+
+    .handle {
+      left: calc(100% - 16px);
+    }
+  }
+}
+
+.handle {
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 14px;
+  height: 14px;
+  background-color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px 0 rgba(0, 35, 11, 0.2);
+  transition: all 0.2s ease-in-out;
+}

@@ -1,9 +1,21 @@
 import React, { FC, useState, useEffect, useContext, useRef } from 'react';
 import { Range, Editor } from 'slate';
 import { useSlate, ReactEditor } from 'slate-react';
+import {} from '@/components/RichEditor';
 import helpers from '../../helpers';
 import styles from './styles.less';
 import { Context } from './context';
+import Switch from '../../../Switch';
+
+export interface ILink {
+  url: string;
+  target: '_self' | '_blank';
+}
+
+const initLink: ILink = {
+  url: '',
+  target: '_blank',
+};
 
 const LinkEditor: FC = () => {
   const linkEditorDom = useRef<HTMLDivElement>(null);
@@ -11,7 +23,7 @@ const LinkEditor: FC = () => {
   const editor = useSlate();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const selectionTemp = useRef<Range | null>(editor.selection);
-  const [url, setUrl] = useState<string>('');
+  const [link, setLink] = useState<ILink>({ ...initLink });
 
   useEffect(() => {
     if (editor.selection === null) {
@@ -38,7 +50,7 @@ const LinkEditor: FC = () => {
 
   useEffect(() => {
     if (!visible) {
-      setUrl('');
+      setLink({ ...initLink });
     }
   }, [visible]);
 
@@ -75,7 +87,7 @@ const LinkEditor: FC = () => {
   if (!visible) {
     return null;
   }
-
+  console.log(link.target === '_self');
   return (
     <div
       ref={linkEditorDom}
@@ -89,26 +101,40 @@ const LinkEditor: FC = () => {
           ref={inputRef}
           className={styles.input}
           placeholder="URL"
-          value={url}
+          value={link.url}
           onKeyDown={e => {
-            if (e.key === 'Enter' && url) {
+            if (e.key === 'Enter' && link.url) {
               e.stopPropagation();
-              helpers.wrapLink(editor, selectionTemp.current, url);
+              helpers.wrapLink(editor, selectionTemp.current, link);
               setVisible(false);
             }
           }}
           onChange={e => {
-            setUrl(e.target.value);
+            const value = e.target.value;
+            setLink(state => ({ ...state, url: value }));
           }}
         />
       </div>
-      <div style={{ textAlign: 'right', marginTop: 8 }}>
+      <div className={styles.action}>
+        <div className={styles.openTarget}>
+          <Switch
+            checked={link.target === '_blank'}
+            onChange={checked => {
+              if (checked) {
+                setLink(state => ({ ...state, target: '_blank' }));
+              } else {
+                setLink(state => ({ ...state, target: '_self' }));
+              }
+            }}
+          />
+          <span className={styles.tip}>新窗口打开</span>
+        </div>
         <button
           className={styles.button}
           onClick={e => {
-            if (url) {
+            if (link.url) {
               e.stopPropagation();
-              helpers.wrapLink(editor, selectionTemp.current, url);
+              helpers.wrapLink(editor, selectionTemp.current, link);
               setVisible(false);
             }
           }}
@@ -116,6 +142,7 @@ const LinkEditor: FC = () => {
           插入
         </button>
       </div>
+      <a></a>
     </div>
   );
 };
