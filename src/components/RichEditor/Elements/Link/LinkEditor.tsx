@@ -15,10 +15,20 @@ const LinkEditor: FC = () => {
 
   useEffect(() => {
     if (editor.selection === null) {
-      return;
+      // selectionTemp.current = Editor.end(editor, [])
+    } else {
+      selectionTemp.current = editor.selection;
     }
-    selectionTemp.current = editor.selection;
   }, [editor.selection]);
+
+  useEffect(() => {
+    const closeHandler = () => {
+      setVisible(false);
+    };
+
+    window.addEventListener('mousedown', closeHandler);
+    return () => window.removeEventListener('mousedown', closeHandler);
+  }, []);
 
   useEffect(() => {
     if (inputRef.current && visible) {
@@ -67,7 +77,13 @@ const LinkEditor: FC = () => {
   }
 
   return (
-    <div ref={linkEditorDom} className={styles.linkEditor}>
+    <div
+      ref={linkEditorDom}
+      className={styles.linkEditor}
+      onMouseDown={e => {
+        e.nativeEvent.stopPropagation();
+      }}
+    >
       <div>
         <input
           ref={inputRef}
@@ -82,8 +98,7 @@ const LinkEditor: FC = () => {
             }
           }}
           onChange={e => {
-            const value = e.target.value;
-            setUrl(value);
+            setUrl(e.target.value);
           }}
         />
       </div>

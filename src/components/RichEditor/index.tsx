@@ -7,7 +7,7 @@ import LinkEditor from './Elements/Link/LinkEditor';
 import renderLeaf from './renderLeaf';
 import HoverToolbar from './HoverToolbar';
 import withLinks from './plugins/withLinks';
-import { Container } from './Elements/Link/context';
+import { Container as LinkEditorContainer } from './Elements/Link/context';
 
 const RichEditor: FC = () => {
   const editor = useMemo(
@@ -22,7 +22,7 @@ const RichEditor: FC = () => {
   ]);
 
   return (
-    <Container>
+    <LinkEditorContainer>
       <Slate
         value={value}
         editor={editor}
@@ -31,14 +31,10 @@ const RichEditor: FC = () => {
         }}
       >
         <HoverToolbar />
-        <Editable
-          className={'aa'}
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-        />
+        <Editable renderElement={renderElement} renderLeaf={renderLeaf} />
         <LinkEditor />
       </Slate>
-    </Container>
+    </LinkEditorContainer>
   );
 };
 
