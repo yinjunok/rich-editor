@@ -6,16 +6,16 @@ import Button from './Button';
 import styles from './styles.less';
 
 const LinkButton: FC = () => {
-  const { visible, setVisible } = useContext(Context);
+  const { state, updater } = useContext(Context);
 
   return (
     <>
       <Button
-        className={classNames({ [styles.hover]: visible })}
+        className={classNames({ [styles.hover]: state.visible })}
         onMouseDown={event => {
           event.preventDefault();
           event.stopPropagation();
-          setVisible(true);
+          updater({ visible: true });
         }}
       >
         <ImLink />

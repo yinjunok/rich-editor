@@ -1,7 +1,14 @@
-import React, { FC, useState, useEffect, useContext, useRef } from 'react';
-import { Range, Editor } from 'slate';
-import { useSlate, ReactEditor } from 'slate-react';
-import {} from '@/components/RichEditor';
+import React, {
+  FC,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  CSSProperties,
+} from 'react';
+import { Range } from 'slate';
+import { useSlate } from 'slate-react';
+import { createPortal } from 'react-dom';
 import helpers from '../../helpers';
 import styles from './styles.less';
 import { Context } from './context';
@@ -17,9 +24,15 @@ const initLink: ILink = {
   target: '_blank',
 };
 
+const centerSty: CSSProperties = {
+  left: '50%',
+  top: '50%',
+  transform: 'translate(-50%, -50%)',
+};
+
 const LinkEditor: FC = () => {
   const linkEditorDom = useRef<HTMLDivElement>(null);
-  const { visible, setVisible } = useContext(Context);
+  const { state, updater } = useContext(Context);
   const editor = useSlate();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const selectionTemp = useRef<Range | null>(editor.selection);
@@ -35,7 +48,7 @@ const LinkEditor: FC = () => {
 
   useEffect(() => {
     const closeHandler = () => {
-      setVisible(false);
+      updater({ visible: false });
     };
 
     window.addEventListener('mousedown', closeHandler);
@@ -43,55 +56,32 @@ const LinkEditor: FC = () => {
   }, []);
 
   useEffect(() => {
-    if (inputRef.current && visible) {
+    if (inputRef.current && state.visible) {
       inputRef.current.focus();
     }
-  }, [visible]);
+  }, [state.visible]);
 
   useEffect(() => {
-    if (!visible) {
+    if (!state.visible) {
       setLink({ ...initLink });
     }
-  }, [visible]);
+  }, [state.visible]);
 
-  useEffect(() => {
-    if (visible) {
-      const el = linkEditorDom.current;
-      const { selection } = editor;
-      if (!el) {
-        return;
-      }
-      if (
-        !selection ||
-        !ReactEditor.isFocused(editor) ||
-        Range.isCollapsed(selection) ||
-        Editor.string(editor, selection) === ''
-      ) {
-        el.removeAttribute('style');
-        return;
-      }
-      const domSelection = window.getSelection();
-      if (domSelection) {
-        const domRange = domSelection.getRangeAt(0);
-        const rect = domRange.getBoundingClientRect();
-        el.style.opacity = '1';
-        el.style.top = `${rect.top - el.offsetHeight - 8}px`;
-        el.style.left = `${rect.left +
-          window.pageXOffset -
-          el.offsetWidth / 2 +
-          rect.width / 2}px`;
-      }
-    }
-  }, [visible]);
+  console.log(state.visible);
 
-  if (!visible) {
+  if (!state.visible) {
     return null;
   }
-  console.log(link.target === '_self');
-  return (
+
+  return createPortal(
     <div
       ref={linkEditorDom}
       className={styles.linkEditor}
+      style={
+        state.position
+          ? { left: state.position.left, top: state.position.top }
+          : centerSty
+      }
       onMouseDown={e => {
         e.nativeEvent.stopPropagation();
       }}
@@ -106,7 +96,7 @@ const LinkEditor: FC = () => {
             if (e.key === 'Enter' && link.url) {
               e.stopPropagation();
               helpers.wrapLink(editor, selectionTemp.current, link);
-              setVisible(false);
+              updater({ visible: false });
             }
           }}
           onChange={e => {
@@ -135,7 +125,7 @@ const LinkEditor: FC = () => {
             if (link.url) {
               e.stopPropagation();
               helpers.wrapLink(editor, selectionTemp.current, link);
-              setVisible(false);
+              updater({ visible: false });
             }
           }}
         >
@@ -143,7 +133,8 @@ const LinkEditor: FC = () => {
         </button>
       </div>
       <a></a>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

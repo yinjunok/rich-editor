@@ -32,11 +32,7 @@ const Container: FC = ({ children }) => {
 
   const updater: TUpdater = params => {
     updateLinkEditorState(draft => {
-      for (const p in params) {
-        if (params.hasOwnProperty(p)) {
-          // draft[p] = params[p]
-        }
-      }
+      return { ...draft, ...params };
     });
   };
 
