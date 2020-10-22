@@ -8,7 +8,7 @@ interface ILinkEditorState {
         top: number;
       }
     | undefined;
-  arrow: 'up' | 'down' | 'hidden';
+  arrow: 'top' | 'bottom' | undefined;
   visible: boolean;
 }
 
@@ -17,7 +17,7 @@ type TUpdater = (p: Partial<ILinkEditorState>) => void;
 const Context = createContext<{ state: ILinkEditorState; updater: TUpdater }>({
   state: {
     position: undefined,
-    arrow: 'hidden',
+    arrow: undefined,
     visible: false,
   },
   updater: () => {},
@@ -26,7 +26,7 @@ const Context = createContext<{ state: ILinkEditorState; updater: TUpdater }>({
 const Container: FC = ({ children }) => {
   const [linkEditorState, updateLinkEditorState] = useImmer<ILinkEditorState>({
     position: undefined,
-    arrow: 'hidden',
+    arrow: undefined,
     visible: false,
   });
 

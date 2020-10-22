@@ -15,7 +15,7 @@ const LinkButton: FC = () => {
         onMouseDown={event => {
           event.preventDefault();
           event.stopPropagation();
-          updater({ visible: true });
+          updater({ visible: true, arrow: 'bottom' });
         }}
       >
         <ImLink />

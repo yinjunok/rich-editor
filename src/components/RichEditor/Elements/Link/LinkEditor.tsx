@@ -9,6 +9,7 @@ import React, {
 import { Range } from 'slate';
 import { useSlate } from 'slate-react';
 import { createPortal } from 'react-dom';
+import classNames from 'classnames';
 import helpers from '../../helpers';
 import styles from './styles.less';
 import { Context } from './context';
@@ -76,7 +77,10 @@ const LinkEditor: FC = () => {
   return createPortal(
     <div
       ref={linkEditorDom}
-      className={styles.linkEditor}
+      className={classNames(styles.linkEditor, {
+        [styles.top]: state.arrow === 'top',
+        [styles.bottom]: state.arrow === 'bottom',
+      })}
       style={
         state.position
           ? { left: state.position.left, top: state.position.top }

@@ -8,20 +8,27 @@
     0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
 
   &::after {
-    content: '';
     position: absolute;
     left: 50%;
-    bottom: 0;
-    transform: translate(-50%, 100%);
     width: 0;
     height: 0;
-    border: 8px solid transparent;
+    border: 10px solid transparent;
+  }
+
+  &.bottom::after {
+    content: '';
+    bottom: 0;
     border-top-color: #fff;
-    filter: drop-shadow(
-      0 1px 2px -2px rgba(0, 0, 0, 0.16),
-      0 3px 6px 0 rgba(0, 0, 0, 0.12),
-      0 5px 12px 4px rgba(0, 0, 0, 0.09)
-    );
+    transform: translate(-50%, 100%);
+    filter: drop-shadow(1px 2px 2px rgba(0, 0, 0, 0.16));
+  }
+
+  &.top::after {
+    content: '';
+    top: 0;
+    filter: drop-shadow(1px -1px 2px rgba(0, 0, 0, 0.16));
+    border-bottom-color: #fff;
+    transform: translate(-50%, -100%);
   }
 }
 
