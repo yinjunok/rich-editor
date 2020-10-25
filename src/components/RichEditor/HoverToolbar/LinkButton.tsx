@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { Context } from '../Elements/Link/context';
 import Button from './Button';
 import styles from './styles.less';
+import { getSelectionRect } from '../utils';
 
 const LinkButton: FC = () => {
   const { state, updater } = useContext(Context);
@@ -15,7 +16,19 @@ const LinkButton: FC = () => {
         onMouseDown={event => {
           event.preventDefault();
           event.stopPropagation();
-          updater({ visible: true, arrow: 'bottom' });
+          const rect = getSelectionRect();
+          if (rect) {
+            updater({
+              visible: true,
+              arrow: 'bottom',
+              position: {
+                top: rect.top,
+                left: rect.width / 2 + rect.left,
+              },
+            });
+          } else {
+            updater({ visible: true });
+          }
         }}
       >
         <ImLink />

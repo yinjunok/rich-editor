@@ -1,5 +1,4 @@
-import React, { createContext, FC } from 'react';
-import { useImmer } from 'use-immer';
+import React, { useState, createContext, FC } from 'react';
 
 interface ILinkEditorState {
   position:
@@ -12,27 +11,31 @@ interface ILinkEditorState {
   visible: boolean;
 }
 
+const initLinkState: ILinkEditorState = {
+  position: undefined,
+  arrow: undefined,
+  visible: false,
+};
+
 type TUpdater = (p: Partial<ILinkEditorState>) => void;
 
 const Context = createContext<{ state: ILinkEditorState; updater: TUpdater }>({
   state: {
-    position: undefined,
-    arrow: undefined,
-    visible: false,
+    ...initLinkState,
   },
   updater: () => {},
 });
 
 const Container: FC = ({ children }) => {
-  const [linkEditorState, updateLinkEditorState] = useImmer<ILinkEditorState>({
+  const [linkEditorState, updateLinkEditorState] = useState<ILinkEditorState>({
     position: undefined,
     arrow: undefined,
     visible: false,
   });
 
   const updater: TUpdater = params => {
-    updateLinkEditorState(draft => {
-      return { ...draft, ...params };
+    updateLinkEditorState(() => {
+      return { ...initLinkState, ...params };
     });
   };
 

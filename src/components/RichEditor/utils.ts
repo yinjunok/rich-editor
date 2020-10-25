@@ -1,30 +1,37 @@
-import escapeHtml from 'escape-html'
-import { jsx } from 'slate-hyperscript'
-import { Node, Text } from 'slate'
+import escapeHtml from 'escape-html';
+// import { jsx } from 'slate-hyperscript'
+import { Node, Text } from 'slate';
 
-const serialize = (node: Node) => {
+export const serialize = (node: Node) => {
   if (Text.isText(node)) {
     if (node.bold) {
-      return `<strong>${escapeHtml(node.text)}</strong>`
+      return `<strong>${escapeHtml(node.text)}</strong>`;
     }
-  
-    return escapeHtml(node.text)
+
+    return escapeHtml(node.text);
   }
 
-  const children: string = node.children.map(n => serialize(n)).join('')
+  const children: string = node.children.map(n => serialize(n)).join('');
 
   switch (node.type) {
     case 'quote':
-      return `<blockquote><p>${children}</p></blockquote>`
+      return `<blockquote><p>${children}</p></blockquote>`;
     case 'paragraph':
-      return `<p>${children}</p>`
+      return `<p>${children}</p>`;
     case 'link':
-      return `<a href="${escapeHtml(node.url as string)}">${children}</a>`
+      return `<a href="${escapeHtml(node.url as string)}">${children}</a>`;
     case 'code':
-      return `<pre><code>${children}</code></pre>`
+      return `<pre><code>${children}</code></pre>`;
     default:
-      return children
+      return children;
   }
-}
+};
 
-export default serialize
+export const getSelectionRect = () => {
+  const selection = window.getSelection();
+  if (selection) {
+    return selection.getRangeAt(0).getBoundingClientRect();
+  }
+
+  return null;
+};

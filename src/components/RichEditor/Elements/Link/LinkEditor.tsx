@@ -68,8 +68,6 @@ const LinkEditor: FC = () => {
     }
   }, [state.visible]);
 
-  console.log(state.visible);
-
   if (!state.visible) {
     return null;
   }
@@ -83,7 +81,15 @@ const LinkEditor: FC = () => {
       })}
       style={
         state.position
-          ? { left: state.position.left, top: state.position.top }
+          ? {
+              left:
+                state.position.left -
+                (linkEditorDom.current?.offsetWidth ?? 0) / 2,
+              top:
+                state.position.top -
+                (linkEditorDom.current?.offsetHeight ?? 0) -
+                8,
+            }
           : centerSty
       }
       onMouseDown={e => {
