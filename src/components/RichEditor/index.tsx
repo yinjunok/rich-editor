@@ -6,6 +6,7 @@ import renderElement from './renderElement';
 import LinkEditor from './Elements/Link/LinkEditor';
 import renderLeaf from './renderLeaf';
 import HoverToolbar from './HoverToolbar';
+import ToolBar from './ToolBar';
 import withLinks from './plugins/withLinks';
 import { Container as LinkEditorContainer } from './Elements/Link/context';
 
@@ -30,6 +31,7 @@ const RichEditor: FC = () => {
           setValue(newValue);
         }}
       >
+        <ToolBar />
         <HoverToolbar />
         <Editable renderElement={renderElement} renderLeaf={renderLeaf} />
         <LinkEditor />

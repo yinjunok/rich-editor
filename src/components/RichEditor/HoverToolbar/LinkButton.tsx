@@ -2,7 +2,7 @@ import React, { FC, useContext } from 'react';
 import { ImLink } from 'react-icons/im';
 import classNames from 'classnames';
 import { Context } from '../Elements/Link/context';
-import Button from './Button';
+import Button from '../../Button';
 import styles from './styles.less';
 import { getSelectionRect } from '../utils';
 
