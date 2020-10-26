@@ -1,20 +1,12 @@
+import { Property } from 'csstype';
 import { Editor, Transforms, Range, Node } from 'slate';
 import { TBooleanFormat, IValueFormat, TTextType } from './types';
 import { ILink } from './Elements/Link/LinkEditor';
 
 const helpers = {
+  setTextAlign(editor: Editor, align: Property.TextAlign) {},
   toggleBlock(editor: Editor, format: TTextType) {
     Transforms.setNodes(editor, { type: format });
-    // const isActive = helpers.isBlockActive(editor, format)
-
-    // if (isActive) {
-    //   Transforms.setNodes(editor, {
-    //     type: isActive ? 'paragraph' : format,
-    //   })
-    // } else {
-    //   const block = { type: format, children: [] }
-    //   Transforms.wrapNodes(editor, block)
-    // }
   },
   isBlockActive(editor: Editor, format: TTextType) {
     const [match] = Editor.nodes(editor, {
