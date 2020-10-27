@@ -6,7 +6,9 @@ import { ILink } from './Elements/Link/LinkEditor';
 const helpers = {
   isTextAlignActive(editor: Editor, align: Property.TextAlign) {
     const [match] = Editor.nodes(editor, {
-      match: n => n.align === align,
+      match: n => {
+        return n.align === align;
+      },
     });
 
     return !!match;
