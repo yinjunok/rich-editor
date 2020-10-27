@@ -4,7 +4,16 @@ import { TBooleanFormat, IValueFormat, TTextType } from './types';
 import { ILink } from './Elements/Link/LinkEditor';
 
 const helpers = {
-  setTextAlign(editor: Editor, align: Property.TextAlign) {},
+  isTextAlignActive(editor: Editor, align: Property.TextAlign) {
+    const [match] = Editor.nodes(editor, {
+      match: n => n.align === align,
+    });
+
+    return !!match;
+  },
+  setTextAlign(editor: Editor, align: Property.TextAlign) {
+    Transforms.setNodes(editor, { align });
+  },
   toggleBlock(editor: Editor, format: TTextType) {
     Transforms.setNodes(editor, { type: format });
   },
