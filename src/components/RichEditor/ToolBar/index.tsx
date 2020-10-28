@@ -21,7 +21,11 @@ const ToolBar: FC = () => {
         className={classNames({
           [styles.active]: helpers.isTextAlignActive(editor, 'left'),
         })}
-        onClick={() => helpers.setTextAlign(editor, 'left')}
+        onMouseDown={e => {
+          e.stopPropagation();
+          e.preventDefault();
+          helpers.setTextAlign(editor, 'left');
+        }}
       >
         <ImParagraphLeft />
       </Button>
@@ -29,12 +33,20 @@ const ToolBar: FC = () => {
         className={classNames({
           [styles.active]: helpers.isTextAlignActive(editor, 'center'),
         })}
-        onClick={() => helpers.setTextAlign(editor, 'center')}
+        onMouseDown={e => {
+          e.stopPropagation();
+          e.preventDefault();
+          helpers.setTextAlign(editor, 'center');
+        }}
       >
         <ImParagraphCenter />
       </Button>
       <Button
-        onClick={() => helpers.setTextAlign(editor, 'right')}
+        onMouseDown={e => {
+          e.stopPropagation();
+          e.preventDefault();
+          helpers.setTextAlign(editor, 'right');
+        }}
         className={classNames({
           [styles.active]: helpers.isTextAlignActive(editor, 'right'),
         })}
