@@ -4,6 +4,21 @@ import { TBooleanFormat, IValueFormat, TTextType } from './types';
 import { ILink } from './Elements/Link/LinkEditor';
 
 const helpers = {
+  // isTextIndentActive(editor: Editor) {
+
+  // },
+  setTextIndent(editor: Editor, type: 'increase' | 'decrease') {
+    const selection = editor.selection;
+    if (selection !== null) {
+      // console.log(selection)
+      const node = Editor.nodes(editor, {
+        at: selection,
+        match: n => Editor.isBlock(editor, n),
+      });
+      console.log(node.next());
+    }
+    // Transforms.setNodes(editor, { textIndent })
+  },
   isTextAlignActive(editor: Editor, align: Property.TextAlign) {
     const [match] = Editor.nodes(editor, {
       match: n => {

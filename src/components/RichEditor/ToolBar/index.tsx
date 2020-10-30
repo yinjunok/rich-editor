@@ -3,6 +3,8 @@ import {
   ImParagraphLeft,
   ImParagraphCenter,
   ImParagraphRight,
+  ImIndentDecrease,
+  ImIndentIncrease,
 } from 'react-icons/im';
 import classNames from 'classnames';
 import { useSlate } from 'slate-react';
@@ -52,6 +54,24 @@ const ToolBar: FC = () => {
         })}
       >
         <ImParagraphRight />
+      </Button>
+      <Button
+        onMouseDown={e => {
+          e.stopPropagation();
+          e.preventDefault();
+          helpers.setTextAlign(editor, 'right');
+        }}
+      >
+        <ImIndentIncrease />
+      </Button>
+      <Button
+        onMouseDown={e => {
+          e.stopPropagation();
+          e.preventDefault();
+          helpers.setTextIndent(editor, 'increase');
+        }}
+      >
+        <ImIndentDecrease />
       </Button>
     </div>
   );
