@@ -19,7 +19,12 @@ const renderElement = ({
       return (
         <p
           {...attributes}
-          style={{ textAlign: element.align as Property.TextAlign }}
+          style={{
+            textAlign: element.align as Property.TextAlign,
+            textIndent: element.textIndent
+              ? `${(element.textIndent as number) * 2}em`
+              : '0',
+          }}
         >
           {children}
         </p>
@@ -28,7 +33,12 @@ const renderElement = ({
       return (
         <h1
           {...attributes}
-          style={{ textAlign: element.align as Property.TextAlign }}
+          style={{
+            textAlign: element.align as Property.TextAlign,
+            textIndent: element.textIndent
+              ? `${(element.textIndent as number) * 2}em`
+              : '0',
+          }}
         >
           {children}
         </h1>
@@ -37,7 +47,12 @@ const renderElement = ({
       return (
         <h2
           {...attributes}
-          style={{ textAlign: element.align as Property.TextAlign }}
+          style={{
+            textAlign: element.align as Property.TextAlign,
+            textIndent: element.textIndent
+              ? `${(element.textIndent as number) * 2}em`
+              : '0',
+          }}
         >
           {children}
         </h2>
@@ -46,7 +61,12 @@ const renderElement = ({
       return (
         <h3
           {...attributes}
-          style={{ textAlign: element.align as Property.TextAlign }}
+          style={{
+            textAlign: element.align as Property.TextAlign,
+            textIndent: element.textIndent
+              ? `${(element.textIndent as number) * 2}em`
+              : '0',
+          }}
         >
           {children}
         </h3>
@@ -55,7 +75,12 @@ const renderElement = ({
       return (
         <h4
           {...attributes}
-          style={{ textAlign: element.align as Property.TextAlign }}
+          style={{
+            textAlign: element.align as Property.TextAlign,
+            textIndent: element.textIndent
+              ? `${(element.textIndent as number) * 2}em`
+              : '0',
+          }}
         >
           {children}
         </h4>
